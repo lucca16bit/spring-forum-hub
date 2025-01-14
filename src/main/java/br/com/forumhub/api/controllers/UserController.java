@@ -1,6 +1,6 @@
 package br.com.forumhub.api.controllers;
 
-import br.com.forumhub.api.dto.usuario.UsuarioDto;
+import br.com.forumhub.api.dto.usuario.CadastroUsuarioDto;
 import br.com.forumhub.api.models.entities.Usuario;
 import br.com.forumhub.api.repositories.UsuarioRepository;
 import jakarta.validation.Valid;
@@ -25,7 +25,7 @@ public class UserController {
 
     @PostMapping("/cadastro")
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody @Valid UsuarioDto dados) {
+    public ResponseEntity cadastrar(@RequestBody @Valid CadastroUsuarioDto dados) {
         if (repository.findByEmail(dados.email()) != null) {
             return ResponseEntity.badRequest().body("Email já cadastrado");
         }

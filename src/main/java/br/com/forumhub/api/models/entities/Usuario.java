@@ -1,5 +1,6 @@
 package br.com.forumhub.api.models.entities;
 
+import br.com.forumhub.api.dto.usuario.CadastroUsuarioDto;
 import br.com.forumhub.api.dto.usuario.UsuarioDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,6 +36,12 @@ public class Usuario implements UserDetails {
 
     public Usuario(UsuarioDto dados) {
         this.id = dados.id();
+        this.email = dados.email();
+        this.nome = dados.nome();
+        this.senha = dados.senha();
+    }
+
+    public Usuario(CadastroUsuarioDto dados) {
         this.email = dados.email();
         this.nome = dados.nome();
         this.senha = dados.senha();
