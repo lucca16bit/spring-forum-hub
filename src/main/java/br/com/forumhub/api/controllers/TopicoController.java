@@ -1,5 +1,6 @@
 package br.com.forumhub.api.controllers;
 
+import br.com.forumhub.api.dto.topico.AtualizarTopicoDto;
 import br.com.forumhub.api.dto.topico.CadastroTopicoDto;
 import br.com.forumhub.api.dto.topico.DetalhesTopicoDto;
 import br.com.forumhub.api.dto.topico.ListagemTopicosDto;
@@ -57,6 +58,15 @@ public class TopicoController {
     public ResponseEntity detalharTopico(@PathVariable Long id) {
         var topico = repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Id do tópico não existe"));
+
+        return ResponseEntity.ok(new DetalhesTopicoDto(topico));
+    }
+
+    @PutMapping
+    @Transactional
+    public ResponseEntity atualizarTopico(@RequestBody @Valid AtualizarTopicoDto dados) {
+        var topico = repository.getReferenceById(dados.id());
+        topico.atualizarInfo(dados);
 
         return ResponseEntity.ok(new DetalhesTopicoDto(topico));
     }
