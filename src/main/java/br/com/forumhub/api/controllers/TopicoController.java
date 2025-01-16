@@ -2,18 +2,20 @@ package br.com.forumhub.api.controllers;
 
 import br.com.forumhub.api.dto.topico.CadastroTopicoDto;
 import br.com.forumhub.api.dto.topico.DetalhesTopicoDto;
+import br.com.forumhub.api.dto.topico.ListagemTopicosDto;
 import br.com.forumhub.api.models.entities.Topico;
 import br.com.forumhub.api.repositories.TopicoRepository;
 import br.com.forumhub.api.repositories.UsuarioRepository;
 import br.com.forumhub.api.services.TopicoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -39,5 +41,13 @@ public class TopicoController {
                 .buildAndExpand(topico.getId()).toUri();
 
         return ResponseEntity.created(uri).body(new DetalhesTopicoDto(topico));
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<ListagemTopicosDto>> listarTopicos(@PageableDefault(size = 10, sort = {"dataCriacao"}, direction = Sort.Direction.ASC) Pageable paginacao) {
+        var page = repository.findAll(paginacao)
+                .map(ListagemTopicosDto::new);
+
+        return ResponseEntity.ok(page);
     }
 }
