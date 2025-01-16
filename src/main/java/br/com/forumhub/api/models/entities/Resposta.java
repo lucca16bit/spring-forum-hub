@@ -23,6 +23,7 @@ public class Resposta {
     private LocalDateTime dataCriacao;
 
     @ManyToOne
+    @JoinColumn(name = "autor", nullable = false)
     private Usuario autor;
 
     private boolean solucao;

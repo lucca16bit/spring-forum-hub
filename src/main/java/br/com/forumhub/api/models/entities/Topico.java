@@ -2,8 +2,11 @@ package br.com.forumhub.api.models.entities;
 
 import br.com.forumhub.api.dto.topico.CadastroTopicoDto;
 import br.com.forumhub.api.models.status.Status;
+import br.com.forumhub.api.repositories.UsuarioRepository;
+import br.com.forumhub.api.services.TopicoService;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,6 +31,7 @@ public class Topico {
     private Status status;
 
     @ManyToOne
+    @JoinColumn(name = "autor_id", nullable = false)
     private Usuario autor;
 
     private String curso;
@@ -48,11 +52,14 @@ public class Topico {
         this.respostas = respostas;
     }
 
-    public Topico(CadastroTopicoDto dados) {
+    public Topico(CadastroTopicoDto dados, UsuarioRepository usuarioRepository) {
         this.titulo = dados.titulo();
         this.mensagem = dados.mensagem();
-        this.autor = dados.autor();
+        this.autor = usuarioRepository.findById(dados.autorId())
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
         this.curso = dados.curso();
+        this.dataCriacao = LocalDateTime.now();
+        this.status = Status.NAO_RESPONDIDO;
     }
 
     public Long getId() {

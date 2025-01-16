@@ -4,6 +4,8 @@ import br.com.forumhub.api.dto.topico.CadastroTopicoDto;
 import br.com.forumhub.api.dto.topico.DetalhesTopicoDto;
 import br.com.forumhub.api.models.entities.Topico;
 import br.com.forumhub.api.repositories.TopicoRepository;
+import br.com.forumhub.api.repositories.UsuarioRepository;
+import br.com.forumhub.api.services.TopicoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +21,19 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class TopicoController {
 
     @Autowired
+    private TopicoService topicoService;
+
+    @Autowired
     private TopicoRepository repository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @PostMapping
     @Transactional
     public ResponseEntity cadastrarTopico(@RequestBody @Valid CadastroTopicoDto dados, UriComponentsBuilder builder) {
-        var topico = new Topico(dados);
-        System.out.println(topico);
+        var topico = new Topico(dados, usuarioRepository);
+        repository.save(topico);
 
         var uri = builder.path("/topicos/{id}")
                 .buildAndExpand(topico.getId()).toUri();
