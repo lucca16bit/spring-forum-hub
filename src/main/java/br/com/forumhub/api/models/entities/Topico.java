@@ -3,8 +3,8 @@ package br.com.forumhub.api.models.entities;
 import br.com.forumhub.api.dto.topico.AtualizarTopicoDto;
 import br.com.forumhub.api.dto.topico.CadastroTopicoDto;
 import br.com.forumhub.api.models.status.Status;
+import br.com.forumhub.api.repositories.TopicoRepository;
 import br.com.forumhub.api.repositories.UsuarioRepository;
-import br.com.forumhub.api.services.TopicoService;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,18 +61,6 @@ public class Topico {
         this.curso = dados.curso();
         this.dataCriacao = LocalDateTime.now();
         this.status = Status.NAO_RESPONDIDO;
-    }
-
-    public void atualizarInfo(AtualizarTopicoDto dados) {
-        if (dados.titulo() != null) {
-            this.titulo = dados.titulo();
-        }
-        if (dados.mensagem() != null) {
-            this.mensagem = dados.mensagem();
-        }
-        if (dados.curso() != null) {
-            this.curso = dados.curso();
-        }
     }
 
     public Long getId() {
@@ -137,5 +125,17 @@ public class Topico {
 
     public void setRespostas(List<Resposta> respostas) {
         this.respostas = respostas;
+    }
+
+    public void atualizarInfo(AtualizarTopicoDto dados) {
+        if (dados.titulo() != null) {
+            this.titulo = dados.titulo();
+        }
+        if (dados.mensagem() != null) {
+            this.mensagem = dados.mensagem();
+        }
+        if (dados.curso() != null) {
+            this.curso = dados.curso();
+        }
     }
 }
