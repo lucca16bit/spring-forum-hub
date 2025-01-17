@@ -7,7 +7,6 @@ import br.com.forumhub.api.dto.topico.ListagemTopicosDto;
 import br.com.forumhub.api.models.entities.Topico;
 import br.com.forumhub.api.repositories.TopicoRepository;
 import br.com.forumhub.api.repositories.UsuarioRepository;
-import br.com.forumhub.api.services.TopicoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,9 +23,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RestController
 @RequestMapping("/topicos")
 public class TopicoController {
-
-    @Autowired
-    private TopicoService topicoService;
 
     @Autowired
     private TopicoRepository repository;
@@ -69,5 +65,16 @@ public class TopicoController {
         topico.atualizarInfo(dados);
 
         return ResponseEntity.ok(new DetalhesTopicoDto(topico));
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity excluirTopico(@PathVariable Long id) {
+        if (!repository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id do tópico não existe");
+        }
+
+        repository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
