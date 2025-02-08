@@ -7,6 +7,7 @@ import br.com.forumhub.api.dto.topico.ListagemTopicosDto;
 import br.com.forumhub.api.models.entities.Topico;
 import br.com.forumhub.api.repositories.TopicoRepository;
 import br.com.forumhub.api.repositories.UsuarioRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/topicos")
+@SecurityRequirement(name = "bearer-key")
 public class TopicoController {
 
     @Autowired

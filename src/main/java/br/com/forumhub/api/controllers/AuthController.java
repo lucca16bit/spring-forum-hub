@@ -4,6 +4,7 @@ import br.com.forumhub.api.dto.security.AuthDto;
 import br.com.forumhub.api.dto.security.TokenJWTDto;
 import br.com.forumhub.api.models.entities.Usuario;
 import br.com.forumhub.api.services.TokenService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/login")
+@SecurityRequirement(name = "bearer-key")
 public class AuthController {
 
     @Autowired

@@ -3,6 +3,7 @@ package br.com.forumhub.api.controllers;
 import br.com.forumhub.api.dto.usuario.CadastroUsuarioDto;
 import br.com.forumhub.api.models.entities.Usuario;
 import br.com.forumhub.api.repositories.UsuarioRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/usuario")
+@SecurityRequirement(name = "bearer-key")
 public class UserController {
 
     @Autowired
