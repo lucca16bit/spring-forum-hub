@@ -16,14 +16,14 @@ public class Resposta {
     private String mensagem;
 
     @ManyToOne
-    @JoinColumn(name = "topico", nullable = false)
+    @JoinColumn(name = "topico_id", nullable = false)
     private Topico topico;
 
     @Column(name = "data_criacao")
     private LocalDateTime dataCriacao;
 
     @ManyToOne
-    @JoinColumn(name = "autor", nullable = false)
+    @JoinColumn(name = "autor_id", nullable = false)
     private Usuario autor;
 
     private boolean solucao;
@@ -34,9 +34,9 @@ public class Resposta {
         this.id = id;
         this.mensagem = mensagem;
         this.topico = topico;
-        this.dataCriacao = dataCriacao;
         this.autor = autor;
         this.solucao = solucao;
+        this.dataCriacao = LocalDateTime.now();
     }
 
     public Long getId() {
