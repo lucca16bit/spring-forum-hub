@@ -1,0 +1,5 @@
+alter table resposta
+rename constraint fkltuv9rkfjtlmn8b0rb3wdbjsv to fk_resposta_topico_id;
+
+alter table resposta
+rename constraint fk9999kvnmdq63ah7imctrl06r7 to fk_resposta_usuario_id;
