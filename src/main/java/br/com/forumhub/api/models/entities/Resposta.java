@@ -1,6 +1,10 @@
 package br.com.forumhub.api.models.entities;
 
+import br.com.forumhub.api.dto.resposta.CadastroRespostaDto;
+import br.com.forumhub.api.repositories.TopicoRepository;
+import br.com.forumhub.api.repositories.UsuarioRepository;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -28,15 +32,25 @@ public class Resposta {
 
     private boolean solucao;
 
-    public Resposta(){}
+    public Resposta(@NotBlank String mensagem, Topico topico, Usuario autor, boolean b) {}
 
-    public Resposta(Long id, String mensagem, Topico topico, LocalDateTime dataCriacao, Usuario autor, boolean solucao) {
-        this.id = id;
+    public Resposta(String mensagem, Topico topico, LocalDateTime dataCriacao, Usuario autor, boolean solucao) {
         this.mensagem = mensagem;
         this.topico = topico;
         this.autor = autor;
         this.solucao = solucao;
+        this.dataCriacao = dataCriacao;
+    }
+
+    public Resposta(CadastroRespostaDto dados, UsuarioRepository usuarioRepository, TopicoRepository topicoRepository) {
+        this.mensagem = dados.mensagem();
+        this.solucao = false;
         this.dataCriacao = LocalDateTime.now();
+
+        this.autor = usuarioRepository.findById(dados.autorId())
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não existe"));
+        this.topico = topicoRepository.findById(dados.topicoId())
+                .orElseThrow(() -> new IllegalArgumentException("Tópico não encontrado"));
     }
 
     public Long getId() {
